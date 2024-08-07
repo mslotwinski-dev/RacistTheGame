@@ -7,7 +7,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
-    score: String,
+    score: Number,
   },
 })
 </script>

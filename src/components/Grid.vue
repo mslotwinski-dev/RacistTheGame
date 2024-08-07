@@ -1,6 +1,8 @@
 <template>
   <div class="container">
+    <Bar v-if="score != 0" :key="restart" :time="time" :max="MAX_TIME" />
     <Score :score="score" />
+
     <div class="grid" :key="restart">
       <div class="column" v-for="i in size" :key="i">
         <div class="row" v-for="j in size" :key="j">
@@ -26,9 +28,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Score from './Score.vue'
+import Bar from './Bar.vue'
 
 export default defineComponent({
-  components: { Score },
+  components: { Score, Bar },
   data() {
     return {
       score: 0,
@@ -41,6 +44,8 @@ export default defineComponent({
       background: 'black',
       opacity: 0.5,
       restart: 0,
+      time: 50,
+      MAX_TIME: 50,
     }
   },
   methods: {
@@ -55,13 +60,7 @@ export default defineComponent({
       if (this.score == 15) this.size = 5
       if (this.score == 20) this.size = 6
 
-      if (this.score == 0) this.opacity = 0.5
-      if (this.score == 1) this.opacity = 0.4
-      if (this.score == 2) this.opacity = 0.3
-      if (this.score == 8) this.opacity = 0.2
-      if (this.score == 16) this.opacity = 0.15
-      if (this.score == 25) this.opacity = 0.1
-      if (this.score == 32) this.opacity = 0.075
+      this.opacity = 0.35 * Math.pow(1.075, -this.score) + 0.01
     },
     generate() {
       this.stats()
@@ -84,15 +83,28 @@ export default defineComponent({
     won() {
       this.score++
       this.generate()
+
+      if (this.score > 40) this.time = this.MAX_TIME + 2
+      else if (this.score > 20) this.time = this.MAX_TIME + 1
+      else this.time = this.MAX_TIME
     },
     lose() {
       alert('PRZEGRAŁEŚ')
       this.score = 0
       this.generate()
     },
+    timer() {
+      if (this.score != 0) this.time--
+      else this.time = this.MAX_TIME
+      if (this.time == 0) this.lose()
+    },
   },
   mounted() {
     this.generate()
+
+    window.setInterval(() => {
+      this.timer()
+    }, 100)
   },
 })
 </script>
@@ -116,6 +128,24 @@ export default defineComponent({
   border-radius: 50%;
   margin: 10px;
   overflow: hidden;
+  cursor: pointer;
+
+  &.size2 {
+    margin: 10px;
+  }
+  &.size3 {
+    margin: 8px;
+  }
+  &.size4 {
+    margin: 7px;
+  }
+  &.size5 {
+    margin: 6px;
+  }
+
+  &.size6 {
+    margin: 5px;
+  }
 
   @media (max-width: 1000px) {
     &.size2 {
