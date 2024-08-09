@@ -22,7 +22,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home {
   width: 100vw;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;

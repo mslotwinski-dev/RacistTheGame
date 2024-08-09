@@ -18,6 +18,6 @@ export default defineComponent({
 div {
   font-size: 25px;
   font-weight: 600;
-  margin: 10px;
+  margin-bottom: 10px;
 }
 </style>

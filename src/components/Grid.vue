@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <Bar v-if="score != 0" :key="restart" :time="time" :max="MAX_TIME" />
+    <MaxScore :key="restart" />
     <Score :score="score" />
 
     <div class="grid" :key="restart">
@@ -29,9 +30,10 @@
 import { defineComponent } from 'vue'
 import Score from './Score.vue'
 import Bar from './Bar.vue'
+import MaxScore from './MaxScore.vue'
 
 export default defineComponent({
-  components: { Score, Bar },
+  components: { Score, Bar, MaxScore },
   data() {
     return {
       score: 0,
@@ -62,9 +64,18 @@ export default defineComponent({
 
       this.opacity = 0.35 * Math.pow(1.075, -this.score) + 0.01
     },
+    maxscore() {
+      if (!localStorage.maxscore) localStorage.maxscore = 0
+      localStorage.maxscore = Math.max(
+        this.score,
+        Number(localStorage.maxscore)
+      )
+    },
     generate() {
       this.stats()
       this.restart++
+
+      this.maxscore()
 
       const r = this.rand(30, 225)
       const g = this.rand(30, 225)
