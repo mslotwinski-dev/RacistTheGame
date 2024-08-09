@@ -1,4 +1,5 @@
 <template>
+  <!-- dla marysi -->
   <router-view />
 </template>
 
