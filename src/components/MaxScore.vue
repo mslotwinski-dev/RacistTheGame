@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <img src="@/assets/high.png" />
+    <img src="@/assets/high.png" alt="high score" />
     <div>
       Najwyższy wynik:
       {{ max }}
@@ -14,14 +14,26 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   data() {
     return {
-      max: localStorage.getItem('maxscore'),
+      max: Number(localStorage.getItem('maxscore')) || 0,
     }
+  },
+  mounted() {
+    window.addEventListener('storage', this.updateMax)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this.updateMax)
+  },
+  methods: {
+    updateMax() {
+      this.max = Number(localStorage.getItem('maxscore')) || 0
+    },
   },
 })
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
+
 .box {
   display: flex;
   align-items: center;
@@ -30,5 +42,6 @@ export default defineComponent({
 
 img {
   height: 30px;
+  margin-right: 8px;
 }
 </style>

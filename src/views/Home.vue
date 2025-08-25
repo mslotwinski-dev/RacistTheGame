@@ -16,6 +16,9 @@ export default defineComponent({
     Header,
     Grid,
   },
+  mounted() {
+    document.title = 'Racist'
+  },
 })
 </script>
 
